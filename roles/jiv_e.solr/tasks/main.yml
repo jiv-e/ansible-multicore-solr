@@ -1,0 +1,27 @@
+---
+- name: Update APT package cache
+  apt: update_cache=yes
+
+- name: Ensure java is installed
+  apt: name=default-jre-headless state=present
+
+- name: Ensure curl is installed
+  apt: name=curl state=present
+
+- name: If updateSolr variable is set remove the old Apache Solr instance
+  include: uninstall-solr.yml
+  when: jiv_solr__update
+
+- name: If Apache Solr's path exists skip installing
+  stat: path={{ jiv_solr__installPath }} 
+  register: jiv_solr__installPathCheck
+
+- name: Install Apache Solr
+  include: install-solr.yml
+  when: not jiv_solr__installPathCheck.stat.exists
+
+- name: Configure Drupal indexes
+  include: configure-drupal-cores.yml
+
+- name: Start Apache Solr
+  command: service solr start

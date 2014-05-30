@@ -1,0 +1,15 @@
+---
+jiv_solr__version: 4.7.2
+jiv_solr__searchApiSolrVersion: 7.x-1.5
+jiv_solr__user: solr
+
+# This is appended to the end of the automatically fetched closest mirror URL.
+# E.g. http://apache.mirror.rafal.ca/lucene/solr/
+jiv_solr__downloadPath: "{{ jiv_solr__version }}/solr-{{ jiv_solr__version }}.tgz"
+jiv_solr__saveTarPath: /tmp/solr-{{ jiv_solr__version }}.tgz 
+jiv_solr__installPath: /opt/solr
+jiv_solr__update: no 
+jiv_solr__multicoreRoot: sites 
+jiv_solr__cores:
+  - { name: site1, coreType: default }
+  - { name: site2, coreType: drupal }

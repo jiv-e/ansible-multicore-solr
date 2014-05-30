@@ -1,0 +1,69 @@
+---
+- name: Get the closest mirror for Apache Solr
+  shell: curl -s http://www.apache.org/dyn/closer.cgi/lucene/solr | sed -n '/id="http"/,/id="ftp"/p' | sed -nr 's/.*href=\"(.*)\".*/\1/p'
+  register: jiv_solr__closestMirror
+  changed_when: false
+
+- name: Download Apache Solr
+  get_url: url={{ jiv_solr__closestMirror.stdout }}/{{ jiv_solr__downloadPath }} dest={{ jiv_solr__saveTarPath }}
+
+- name: Ensure that Apache Solr install folder exists
+  file: dest={{ jiv_solr__installPath }} state=directory
+        owner=root group=root mode=755
+
+- name: Extract Apache Solr
+  command: tar -xzf {{ jiv_solr__saveTarPath }} --directory {{ jiv_solr__installPath }} --strip-components=1
+
+- name: Ensure that multicore configuration root exists
+  file: dest={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }} state=directory
+        owner=root group=root mode=755
+
+- name: Ensure that core folders exist 
+  file: dest={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }} state=directory
+        owner=root group=root mode=755
+  with_items: jiv_solr__cores
+
+- name: Copy solr/example contents to multicore configuration root
+  command: rsync -au {{ jiv_solr__installPath }}/example/ {{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }} 
+
+- name: Ensure that unnecessary folders are removed
+  file: dest={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/{{ item }} state=absent
+  with_items:
+    - exampledocs
+    - example-DIH
+    - example-schemaless
+    - collection1
+    - multicore
+
+- name: Upload multicore solr.xml template
+  template: src=solr.xml.j2 dest={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/solr.xml
+            owner=root group=root mode=644 
+
+- name: Copy example conf to core folders
+  command: rsync -au {{ jiv_solr__installPath }}/example/solr/collection1/ {{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/
+  with_items: jiv_solr__cores
+
+- name: Upload core.properties to core folders
+  template: src=core.properties.j2 dest={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/core.properties
+            owner=root group=root mode=644
+  with_items: jiv_solr__cores
+
+- name: Upload Apache Solr init script - sudo service solr start/stop/restart 
+  template: src=solr-init.d.sh.j2 dest=/etc/init.d/solr
+            owner=root group=root mode=755
+
+- name: Ensure that solr group is present  
+  group: name={{ jiv_solr__user }} state=present
+- name: Ensure that solr user is present  
+  user: name={{ jiv_solr__user }}
+        group={{ jiv_solr__user }}
+        state=present 
+        home={{ jiv_solr__installPath }}
+        createhome=no
+        shell=/dev/null
+
+- name: Ensure that solr user owns the solr folder
+  file: dest={{ jiv_solr__installPath }} state=directory recurse=yes
+        owner={{ jiv_solr__user }} group={{ jiv_solr__user }}
+
+

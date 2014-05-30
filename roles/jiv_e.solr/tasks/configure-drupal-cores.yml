@@ -1,0 +1,10 @@
+---
+- name: Download search_api_solr Drupal module
+  get_url: url=http://ftp.drupal.org/files/projects/search_api_solr-{{ jiv_solr__searchApiSolrVersion }}.tar.gz
+           dest=/tmp/search_api_solr-{{ jiv_solr__searchApiSolrVersion }}.tar.gz
+
+- name: Extract the config to Drupal cores
+  command: tar -x --strip=3 -f /tmp/search_api_solr-{{ jiv_solr__searchApiSolrVersion }}.tar.gz search_api_solr/solr-conf/4.x
+           chdir={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/conf
+  with_items: jiv_solr__cores
+  when: item.coreType == "drupal"

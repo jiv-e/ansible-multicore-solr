@@ -1,0 +1,8 @@
+---
+- name: Test roles 
+  hosts: all 
+  remote_user: vagrant 
+  sudo: True
+
+  roles:
+    - jiv_e.solr
