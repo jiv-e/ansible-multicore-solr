@@ -4,7 +4,7 @@ This playbook is based on a great tutorial written by 2bits.
 
 http://2bits.com/articles/configuring-apache-solr-4x-drupal-password-authentication.html
 
-Thank you!
+Thanks guys!
 
 Provides
 --------
@@ -35,22 +35,22 @@ Usage - Vagrant
 -------------
 1. Clone the repository
 2. Cd to the cloned folder and run:
-```
-$ vagrant up
-```
+  ```
+  $ vagrant up
+  ```
 3. Run
-```
-$ ansible-playbook -i hosts main.yml --private-key=~/.vagrant.d/insecure_private_key
-```
+  ```
+  $ ansible-playbook -i hosts main.yml --private-key=~/.vagrant.d/insecure_private_key
+  ```
 4. Run
-```
-$ vagrant ssh
-```
+  ```
+  $ vagrant ssh
+  ```
 5. After ssh session is started run:
-```
-$ sudo service solr start
-```
-6. Navigate to _http://192.168.56.107:8983/solr_ with your browser.
+  ```
+  $ sudo service solr start
+  ```
+6. Navigate to http://192.168.56.107:8983/solr with your browser.
 
 Usage - Remote server
 ---------------------
