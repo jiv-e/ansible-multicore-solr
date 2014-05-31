@@ -28,7 +28,7 @@ Requires
 * Ansible (tested on 1.6)
   - http://docs.ansible.com/intro_installation.html
 * Ubuntu (tested on 12.04 LTS)
-* Vagrant (tested on 1.5.1) - *optional*
+* Vagrant *optional* (tested on 1.5.1)
   - https://docs.vagrantup.com/v2/getting-started/index.html
 
 Usage - Vagrant
@@ -77,7 +77,7 @@ You can change the settings by editing a default settings file but it's better t
    - http://docs.ansible.com/intro_inventory.html#host-variables
 3. In files host\_vars/hostname or group\_vars/groupname
    - You have to create these yourself and use host names or groups in your hosts file
-   - http://docs.ansible.com/playbooks_best_practices.html#directory-layout
+   - See http://docs.ansible.com/playbooks_best_practices.html#directory-layout
    - See also the previous link to understand how to name hosts and for host groups
 
 Default settings are stored in roles/jiv\_e.solr/default/main.yml.
