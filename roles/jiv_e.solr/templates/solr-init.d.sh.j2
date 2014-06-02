@@ -42,7 +42,6 @@ do_start() {
     echo "Failed"
   fi
 
-  exit $RC
 }
 
 do_stop() {
@@ -56,7 +55,6 @@ do_stop() {
     echo "Failed"
   fi
 
-  exit $RC
 }
 
 COMMAND=$1
@@ -64,16 +62,19 @@ COMMAND=$1
 case "$COMMAND" in
 start)
   do_start
+  exit $RC
   ;;
 
 stop)
   do_stop
+  exit $RC
   ;;
 
 restart)
   do_stop
   sleep 3
   do_start
+  exit $RC
   ;;
 
 *)
