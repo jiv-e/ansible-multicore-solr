@@ -27,8 +27,8 @@
 
 #- debug: var=jiv_solr__rsyncResult.results
 
-- name: Override core configuration with Drupal search_api_solr configuration
-  command: rsync -ab --stats /tmp/{{ jiv_solr__apachesolrConfPath }} {{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/conf/
+- name: Override core configuration with Drupal apachesolr configuration
+  command: rsync -ab --stats /tmp/{{ jiv_solr__apachesolrConfPath }}/ {{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/conf/
   with_items: jiv_solr__cores
   when: item.coreType == "drupal_apachesolr" and item.keepChanges != true
   register: jiv_solr__rsyncResult
