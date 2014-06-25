@@ -32,3 +32,15 @@ jiv_solr__cores:
 # E.g. ansible-playbook -i hosts play.yml -e jiv_solr__uninstall=yes -e jiv_solr__uninstallDependencies=yes
 jiv_solr__uninstall: no 
 jiv_solr__uninstallDependencies: no 
+
+# Not yet implemented
+jiv_solr__passwordProtection: no
+
+## Traffic allowed only from these hosts:
+#
+# Good way to secure your Apache Solr server.
+# Include the server IPs that use the Apache Solr index.
+# By including your own computers IP you can use the web interface.
+jiv_solr__allowedHosts:
+#  - xxx.xx.xxx.xx 
+#  - xxx.xx.xxx.xx 
