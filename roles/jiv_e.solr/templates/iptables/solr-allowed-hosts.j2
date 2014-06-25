@@ -1,0 +1,6 @@
+#!/bin/sh
+{% for item in jiv_solr__allowedHosts %}
+/sbin/iptables -I INPUT 1 -p tcp -s {{ item }} --dport 8983 -j ACCEPT -m comment --comment "Solr allow {{ item }}" 
+{% endfor %}
+exit 0
+

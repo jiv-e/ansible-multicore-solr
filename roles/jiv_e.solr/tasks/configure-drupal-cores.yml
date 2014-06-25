@@ -1,10 +1,35 @@
 ---
-- name: Download search_api_solr Drupal module
+- name: Download search_api_solr Drupal module .tar.gz
   get_url: url=http://ftp.drupal.org/files/projects/search_api_solr-{{ jiv_solr__searchApiSolrVersion }}.tar.gz
            dest=/tmp/search_api_solr-{{ jiv_solr__searchApiSolrVersion }}.tar.gz
 
-- name: Extract the config to Drupal cores
-  command: tar -x --strip=3 -f /tmp/search_api_solr-{{ jiv_solr__searchApiSolrVersion }}.tar.gz search_api_solr/solr-conf/4.x
-           chdir={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/conf
+- name: Download search_api_solr Drupal module .tar.gz
+  get_url: url=http://ftp.drupal.org/files/projects/apachesolr-{{ jiv_solr__apachesolrVersion }}.tar.gz
+           dest=/tmp/apachesolr-{{ jiv_solr__apachesolrVersion }}.tar.gz
+
+- name: Extract search_api_solr Drupal module
+  command: tar -x -f /tmp/search_api_solr-{{ jiv_solr__searchApiSolrVersion }}.tar.gz -C /tmp 
+           creates=/tmp/search_api_solr
+
+- name: Extract apachesolr Drupal module 
+  command: tar -x -f /tmp/apachesolr-{{ jiv_solr__apachesolrVersion }}.tar.gz -C /tmp
+           creates=/tmp/apachesolr
+
+#- name: Check for config changes for search_api_solr cores
+#  rsynccheck: src=/tmp/{{ jiv_solr__searchApiSolrConfPath }}/ dest={{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/conf/
+#  with_items: jiv_solr__cores
+#  when: item.coreType == "drupal_search_api_solr" and item.keepChanges != true
+
+- name: Override core configuration with Drupal search_api_solr configuration
+  command: rsync -ab --stats /tmp/{{ jiv_solr__searchApiSolrConfPath }}/ {{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/conf/
   with_items: jiv_solr__cores
-  when: item.coreType == "drupal"
+  when: item.coreType == "drupal_search_api_solr" and item.keepChanges != true
+
+#- debug: var=jiv_solr__rsyncResult.results
+
+- name: Override core configuration with Drupal search_api_solr configuration
+  command: rsync -ab --stats /tmp/{{ jiv_solr__apachesolrConfPath }} {{ jiv_solr__installPath }}/{{ jiv_solr__multicoreRoot }}/solr/{{ item.name }}/conf/
+  with_items: jiv_solr__cores
+  when: item.coreType == "drupal_apachesolr" and item.keepChanges != true
+  register: jiv_solr__rsyncResult
+

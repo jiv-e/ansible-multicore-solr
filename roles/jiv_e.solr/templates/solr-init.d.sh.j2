@@ -39,7 +39,8 @@ do_start() {
   if [ "$RC" = 0 ]; then
     echo "OK"
   else
-    echo "Failed"
+    echo "Ignoring..."
+    RC=0
   fi
 
 }

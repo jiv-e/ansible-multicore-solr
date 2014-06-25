@@ -1,2 +1,44 @@
 ---
-- debug: msg="moi"
+- name: Uninstall | Stop Apache Solr service
+  service: name=solr state=stopped
+  ignore_errors: yes
+
+- name: Uninstall | Disable run on boot for Solr service
+  command: update-rc.d solr disable
+  ignore_errors: yes
+
+- name: Uninstall | Remove Solr service from boot scripts
+  command: update-rc.d -f solr remove
+  ignore_errors: yes
+
+- name: Uninstall | Remove the service script
+  file: path=/etc/init.d/solr state=absent
+
+- name: Uninstall | Kill all processes run by Solr user
+  command: killall -u {{ jiv_solr__user }} -w
+  ignore_errors: yes
+
+- name: Uninstall | Delete the Solr user
+  user: name={{ jiv_solr__user }} state=absent
+
+- name: Uninstall | Delete Solr installation folder
+  file: path={{ jiv_solr__installPath }} state=absent
+
+- name: Uninstall | Delete Solr iptables startup script
+  file: path=/etc/network/if-pre-up.d/solrhosts state=absent
+
+- name: Uninstall | Delete Solr iptables startup script
+  file: path=/etc/network/if-pre-up.d/solrhosts state=absent
+
+- name: Uninstall | Delete Solr iptables rules
+  shell: iptables-save | grep -v "Solr allow" | iptables-restore
+
+# Uninstalling dependencies
+- name: Uninstall | Ensure java is uninstalled
+  apt: name=default-jre-headless state=absent purge=yes
+  when: jiv_solr__uninstallDependencies
+
+- name: Uninstall | Ensure curl is uninstalled
+  apt: name=curl state=absent purge=yes
+  when: jiv_solr__uninstallDependencies
+  
