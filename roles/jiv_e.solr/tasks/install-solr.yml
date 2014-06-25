@@ -17,6 +17,10 @@
 - name: Print closest mirror
   debug: msg="Closest mirror found - {{ jiv_solr__closestMirror.stdout }}"
 #"
+
+- name: Ensure that temp folder is present
+  file: dest={{ jiv_solr__tempPath }} state=directory
+
 - name: Download Apache Solr
   get_url: url={{ jiv_solr__closestMirror.stdout }}/{{ jiv_solr__downloadPath }} dest={{ jiv_solr__saveTarPath }}
 
@@ -75,12 +79,12 @@
         home=/home/solr
         shell=/bin/bash
 
+- name: Configure Drupal indexes
+  include: configure-drupal-cores.yml
+
 - name: Ensure that solr user owns the solr folder
   file: dest={{ jiv_solr__installPath }} state=directory recurse=yes
         owner={{ jiv_solr__user }} group={{ jiv_solr__user }}
-
-- name: Configure Drupal indexes
-  include: configure-drupal-cores.yml
 
 - name: Ensure that Apache Solr is started on reboot
   command: update-rc.d solr defaults
@@ -106,8 +110,9 @@
 - name: Allow traffic from defined hosts - NOTE! This doesn't restrict traffic!
   command: iptables -I INPUT 1 -p tcp -s {{ item }} --dport 8983 -j ACCEPT -m comment --comment "Solr allow {{ item }}"
   with_items: jiv_solr__allowedHosts
-  when: iptablesRules.stdout.find("Solr allow {{ item }}") == -1
+  when: jiv_solr__allowedHosts | default(false) and iptablesRules.stdout.find("Solr allow {{ item }}") == -1
 
 - name: Ensure that above hosts are allowed on reboot
   template: src=iptables/solr-allowed-hosts.j2 dest=/etc/network/if-pre-up.d/solrhosts
             owner=root group=root mode=0755
+  when: jiv_solr__allowedHosts | default(false)

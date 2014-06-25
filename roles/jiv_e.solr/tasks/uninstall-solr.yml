@@ -18,11 +18,14 @@
   command: killall -u {{ jiv_solr__user }} -w
   ignore_errors: yes
 
+- name: uninstall | Delete solr installation folder
+  file: path={{ jiv_solr__installPath }} state=absent
+
+- name: uninstall | Remove created files from /tmp folder
+  file: path={{ jiv_solr__tempPath }} state=absent
+
 - name: Uninstall | Delete the Solr user
   user: name={{ jiv_solr__user }} state=absent
-
-- name: Uninstall | Delete Solr installation folder
-  file: path={{ jiv_solr__installPath }} state=absent
 
 - name: Uninstall | Delete Solr iptables startup script
   file: path=/etc/network/if-pre-up.d/solrhosts state=absent
