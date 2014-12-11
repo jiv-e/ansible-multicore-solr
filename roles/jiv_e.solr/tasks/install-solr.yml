@@ -6,6 +6,9 @@
 - name: Ensure java is installed
   apt: name=default-jre-headless state=present
 
+- name: Ensure rsync is installed
+  apt: name=rsync state=present
+
 - name: Ensure curl is installed
   apt: name=curl state=present
 
