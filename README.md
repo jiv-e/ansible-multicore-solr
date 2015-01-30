@@ -63,6 +63,14 @@ $ ansible-playbook -i hosts play.yml ...
   - You'll probably need to add _-K_ to the end for prompting the sudo password
   - If you don't use SSH keys for logging in you may need to add other parameters also. Try _-c paramiko_ and _-k_. See all the available options with _ansible-playbook -h_.
 
+Tips
+---------------------
+**Start/stop/restart Solr**  
+Login to the server using ssh. Then...
+```
+$ sudo service solr start/stop/restart
+```
+
 Settings
 ---------------------
 You can change the settings by editing a default settings file but it's better to  override them. See below list for some places you can do that.
