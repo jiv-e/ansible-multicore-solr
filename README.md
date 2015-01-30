@@ -73,7 +73,7 @@ $ sudo service solr start/stop/restart
 
 Settings
 ---------------------
-Default settings are stored in roles/jiv\_e.solr/default/main.yml and you can find plenty of documentation there also.
+Default settings are stored in *roles/jiv\_e.solr/default/main.yml* and you can find plenty of documentation there also.
 
 You can change the settings by editing a default settings file but it's better to  override them. See below list for some places you can do that.
 
