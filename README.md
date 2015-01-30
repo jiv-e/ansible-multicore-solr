@@ -73,6 +73,8 @@ $ sudo service solr start/stop/restart
 
 Settings
 ---------------------
+Default settings are stored in roles/jiv\_e.solr/default/main.yml and you can find plenty of documentation there also.
+
 You can change the settings by editing a default settings file but it's better to  override them. See below list for some places you can do that.
 
 1. At the command line after _ansible-playbook -e_ parameter
@@ -83,5 +85,3 @@ You can change the settings by editing a default settings file but it's better t
    - You have to create these yourself and use host names or groups in your hosts file
    - See http://docs.ansible.com/playbooks_best_practices.html#directory-layout
    - See also the previous link to understand how to name hosts and form host groups
-
-Default settings are stored in roles/jiv\_e.solr/default/main.yml.
