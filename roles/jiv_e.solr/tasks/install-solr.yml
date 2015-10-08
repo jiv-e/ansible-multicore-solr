@@ -13,7 +13,7 @@
   apt: name=curl state=present
 
 - name: Get the closest mirror for Apache Solr
-  shell: curl -s http://www.apache.org/dyn/closer.cgi/lucene/solr | sed -n '/id="http"/,/id="backup"/p' | sed -nr 's/.*href=\"(.*)\".*/\1/p' | sed -n 1p
+  shell: curl -s http://www.apache.org/dyn/closer.cgi/lucene/solr | sed -n '/id="http"/,/id="backup"/p' | sed -nr 's/.*href=\"(.*)\".*/\1/p' | sed -n '2,${/https\?:\/\//p;q}'
   register: jiv_solr__closestMirror
   changed_when: false
 
