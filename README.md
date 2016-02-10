@@ -1,10 +1,48 @@
+Role Name
+=========
 Ansible role for installing multicore Apache Solr
-===============================================
+
 This playbook is based on a great tutorial written by 2bits.
 
 http://2bits.com/articles/configuring-apache-solr-4x-drupal-password-authentication.html
 
 Thanks guys!
+
+Requirements
+------------
+
+* Ansible (tested on 1.6)
+  - http://docs.ansible.com/intro_installation.html
+* Ubuntu (tested on 12.04 LTS)
+
+Role Variables
+--------------
+
+A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+
+Dependencies
+------------
+
+A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+
+Example Playbook
+----------------
+
+Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+
+    - hosts: servers
+      roles:
+         - { role: username.rolename, x: 42 }
+
+License
+-------
+
+BSD
+
+Author Information
+------------------
+
+An optional section for the role authors to include contact information, or a website (HTML is not allowed).
 
 Disclaimer
 ----------
@@ -22,34 +60,12 @@ Provides
   - Installation path
   - Configuring core names and types (default/drupal)
 * Support for Drupal's Solr modules (apachesolr/search\_api\_solr)
-  - Solr version 4.x only 
+  - Solr version 4.x only
   - Config files are fetched from search\_api\_solr/solr-conf/4.x
 * Vagrantfile for testing and development
 * Ansible hosts file that points to the Vagrant box
 
-Requires
-------------
-* Ansible (tested on 1.6)
-  - http://docs.ansible.com/intro_installation.html
-* Ubuntu (tested on 12.04 LTS)
-* Vagrant (*optional*, tested on 1.5.1)
-  - https://docs.vagrantup.com/v2/getting-started/index.html
-
-Usage - Vagrant
--------------
-1. Clone the repository
-2. Cd to the cloned folder and run:
-  ```
-  $ vagrant up
-  ```
-3. Run
-  ```
-  $ ansible-playbook -i hosts play.yml --private-key=~/.vagrant.d/insecure_private_key
-  ```
-4. After the script is run wait for a while for Apache Solr to start
-4. Navigate to http://192.168.56.107:8983/solr with your browser
-
-Usage - Remote server
+Usage
 ---------------------
 1. Clone the repository
 2. Cd to the cloned folder

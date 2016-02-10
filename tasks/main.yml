@@ -1,14 +1,8 @@
----
-# Installing
 
 - name: Install Apache Solr
   include: install-solr.yml
   when: not jiv_solr__uninstall
 
-# Uninstalling
-
 - name: If updateSolr variable is set to uninstall the Apache Solr instance
   include: uninstall-solr.yml
   when: jiv_solr__uninstall
-
-
