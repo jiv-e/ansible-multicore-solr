@@ -10,5 +10,3 @@
 - name: If updateSolr variable is set to uninstall the Apache Solr instance
   include: uninstall-solr.yml
   when: jiv_solr__uninstall
-
-
