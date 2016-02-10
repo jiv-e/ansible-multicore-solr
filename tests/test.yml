@@ -1,5 +1,5 @@
----
 - hosts: localhost
-  remote_user: root
-  roles:
-    - acme
+  vars_files:
+    - '../defaults/main.yml'
+  tasks:
+    - include: '../tasks/main.yml'
