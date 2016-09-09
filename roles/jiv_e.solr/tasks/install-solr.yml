@@ -18,14 +18,14 @@
   changed_when: false
 
 - name: Print closest mirror
-  debug: msg="Closest mirror found - {{ jiv_solr__closestMirror.stdout }}"
+  debug: msg="Closest mirror found - {{ jiv_solr__url }}"
 #"
 
 - name: Ensure that temp folder is present
   file: dest={{ jiv_solr__tempPath }} state=directory
 
 - name: Download Apache Solr
-  get_url: url={{ jiv_solr__closestMirror.stdout }}/{{ jiv_solr__downloadPath }} dest={{ jiv_solr__saveTarPath }}
+  get_url: url={{ jiv_solr__url }}/{{ jiv_solr__downloadPath }} dest={{ jiv_solr__saveTarPath }}
 
 - name: Ensure that Apache Solr install folder exists
   file: dest={{ jiv_solr__installPath }} state=directory
